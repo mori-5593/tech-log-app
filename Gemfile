@@ -72,7 +72,7 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara' # ユーザーの操作を再現するような総合テストを行う
-  gem 'selenium-webdriver' #ブラウザを動かす（上のgemとセットで使う）
+  gem 'selenium-webdriver' # ブラウザを動かす（上のgemとセットで使う）
 end
 
 gem 'devise'
