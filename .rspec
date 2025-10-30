@@ -1,0 +1,2 @@
+--require spec_helper
+--format documentation # テストの中ので何が正解でそうじゃないかを見やすくしてくれる
