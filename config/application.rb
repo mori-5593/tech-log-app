@@ -15,5 +15,7 @@ module TeclogApp
       g.helper false # helperファイルという主にviewファイルで使えるようなメソッドを管理するためのファイルを自動で生成されるのを防ぐ
       g.test_framework :rspec # RSpecというテストフレームを実施するため、他のテストフレームは生成しない。
     end
+
+    config.i18n.default_locale = :ja
   end
 end
