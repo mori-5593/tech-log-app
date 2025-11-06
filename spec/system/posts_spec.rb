@@ -45,7 +45,7 @@ describe "Post", type: :system do
 
       context 'パラメータが異常な場合' do
         let(:title) { nil}
-        it 'Postを作成できない'do
+        it 'Postを作成できない' do
         expect { subject}.not_to change(Post, :count)
         expect(page).to have_content('投稿に失敗しました')
         end
@@ -90,6 +90,41 @@ describe "Post", type: :system do
     it '投稿タイトルをクリックすると詳細ページに遷移する' do
       click_link 'RSpec学習完了'
       expect(current_path).to eq("/posts/#{@post.id}")
+    end
+  end
+
+  describe 'ログ削除機能の検証' do
+    context '投稿したユーザーでログインしている場合' do
+      before do
+        sign_in @user # テストユーザーでログイン
+        visit "/posts/#{@post.id}" # 投稿詳細ページにアクセス
+      end
+
+      it '削除ボタンを表示する' do
+        expect(page).to have_button('削除') # 削除ボタンが表示されていることを確認
+      end
+
+      it '削除ボタンをクリックすると削除できる' do
+        expect do
+          click_button '削除'
+        end.to change(Post, :count).by(-1) # 削除ボタンをクリックすると投稿が1件減ることを確認
+
+          expect(current_path).to eq('/posts') # 投稿一覧ページにリダイレクトされていること確認
+          expect(page).to have_content('投稿が削除されました') # 投稿完了メッセージが表示されていることを確認
+          expect(page).not_to have_content('RSpec学習完了') # 削除した投稿が一覧に表示されていないことを確認
+      end
+    end
+
+    context '投稿したユーザーでログインしていない場合' do
+      it '削除ボタンを表示しない' do
+        expect(page).not_to have_button('削除')
+      end
+
+      it '直接リクエストを投げても削除されない' do
+        expect do
+          delete posts_path(@post) # DELETE リクエストを直接送信
+        end.not_to change(Post, :count) # 投稿レコードの数が変わらないことを確認
+      end
     end
   end
 end
